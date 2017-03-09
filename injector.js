@@ -1,4 +1,4 @@
-;(function () {
+const PeercoinBalanceInjector = (function () {
   'use strict';
   const API_URL = 'https://path-to-api';
   const BUTTON_APPEND_DOM_NODE = document.querySelector('#main .d-header .contents .title');
@@ -21,7 +21,6 @@
 
     button.innerHTML = '$';
     button.classList.add('addr-balance__button');
-    button.id = 'addr-balance-root';
     button.addEventListener('click', () => { togglePopup() });
 
     moneyButtonElement = button;
@@ -35,8 +34,14 @@
   }
 
   function createPopup () {
+    let buttonPos = moneyButtonElement.getBoundingClientRect();
     let popup = document.createElement('div');
+
+    popup.style.top =  `${+buttonPos.top + 25}px`;
+    popup.style.left =  `${buttonPos.left}px`;
     popup.classList.add('addr-balance__popup');
+    popup.id = 'addr-balance-root';
+
     popup.innerHTML = `
       <div class="addr-balance__popup_body">
         <h1 class="addr-balance__popup_title">Balance address check:</h1>
@@ -62,8 +67,14 @@
     `;
 
     popup.addEventListener('click', (e) => {
-      e.stopPropagation();
+      //e.stopPropagation();
     });
+
+    window.onresize = () => {
+      buttonPos = moneyButtonElement.getBoundingClientRect();
+      popup.style.top =  `${+buttonPos.top + 25}px`;
+      popup.style.left =  `${buttonPos.left}px`;
+    }
 
     popupElement = popup;
     
@@ -72,7 +83,7 @@
 
   function appendPopup () {
     let popup = createPopup();
-    moneyButtonElement.appendChild(popup);
+    document.body.appendChild(popup);
   }
 
   function showPopup () {
@@ -195,8 +206,8 @@
       background: #fff;
       border-radius: 5px;
       box-shadow: 0 5px 30px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.05);
-      z-index: 10;
-      position: absolute;
+      z-index: 999999;
+      position: fixed;
       text-align: left;
       opacity: 0;
       transform: translate3d(0, -20px, 0) scale(0.9);
@@ -315,8 +326,8 @@
     @media screen and (max-width: 550px) {
       .addr-balance__popup {
         position: fixed;
-        top: 50px;
-        left: 1%;
+        top: 50px !important;
+        left: 1% !important;
         width: 98%;
       }
       .addr-balance__popup:before {
@@ -330,4 +341,6 @@
   }
 
   return main();
-})();
+});
+
+window.onload = function () { PeercoinBalanceInjector() }

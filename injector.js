@@ -1,7 +1,7 @@
 ;(function () {
   'use strict';
   const API_URL = 'https://path-to-api';
-  const BUTTON_APPEND_DOM_NODE = document.querySelector('#main .d-header .panel');
+  const BUTTON_APPEND_DOM_NODE = document.querySelector('#main .d-header .contents .title');
   const COLOR_GREEN = '#3cb054';
   const COLOR_RED = '#d7435b';
 
@@ -20,7 +20,7 @@
     let button = document.createElement('button');
 
     button.innerHTML = '$';
-    button.classList.add('btn-primary', 'btn-small', 'addr-balance__button');
+    button.classList.add('addr-balance__button');
     button.id = 'addr-balance-root';
     button.addEventListener('click', () => { togglePopup() });
 
@@ -31,7 +31,7 @@
 
   function appendMoneyButton() {
     let button = createMoneyButton();
-    BUTTON_APPEND_DOM_NODE.insertBefore(button, BUTTON_APPEND_DOM_NODE.childNodes[1]);
+    BUTTON_APPEND_DOM_NODE.appendChild(button);
   }
 
   function createPopup () {
@@ -172,15 +172,24 @@
     }
     .addr-balance__button {
       position: relative;
-      float: left;
-      margin-top: 7px;
-      padding: 6px 10px;
+      float: right;
+      margin-top: 8px;
       margin-left: 7px;
+      margin-right: 7px;
       outline: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      background: rgba(255,255,255,0.2);
+      line-height: 22px;
+      border: none;
+      color: #fff;
+
     }
     .addr-balance__popup {
       top: 100%;
-      right: 0;
+      left: 0;
       margin-top: 8px;
       width: 290px;
       background: #fff;
@@ -191,7 +200,7 @@
       text-align: left;
       opacity: 0;
       transform: translate3d(0, -20px, 0) scale(0.9);
-      transform-origin: bottom right;
+      transform-origin: bottom left;
       transition: all 0.2s ease-in-out;
       pointer-events: none;
     }
@@ -204,7 +213,7 @@
       content: '';
       position: absolute;
       top: -5px;
-      right: 9px;
+      left: 8px;
       width: 0; 
       height: 0; 
       border-left: 5px solid transparent;
@@ -220,10 +229,9 @@
       border-radius: 0 0 5px 5px;
       overflow: hidden;
       height: 0;
-      transition: height 0.3s ease-in-out;
     }
     .addr-balance__popup_body--details.on {
-      height: 225px;
+      height: auto;
     }
     #addr-balance-root .addr-balance__popup_title {
       color: ${COLOR_GREEN};

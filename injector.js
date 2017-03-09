@@ -1,7 +1,7 @@
 ;(function () {
   'use strict';
   const API_URL = 'https://path-to-api';
-  const BUTTON_APPEND_DOM_NODE = document.querySelector('#main .d-header .panel > span');
+  const BUTTON_APPEND_DOM_NODE = document.querySelector('#main .d-header .panel');
   const COLOR_GREEN = '#3cb054';
   const COLOR_RED = '#d7435b';
 
@@ -19,8 +19,8 @@
   function createMoneyButton () {
     let button = document.createElement('button');
 
-    button.innerHTML = 'Money';
-    button.classList.add('widget-button', 'btn-primary', 'btn-small', 'sign-up-button', 'addr-balance__button');
+    button.innerHTML = '$';
+    button.classList.add('btn-primary', 'btn-small', 'addr-balance__button');
     button.id = 'addr-balance-root';
     button.addEventListener('click', () => { togglePopup() });
 
@@ -31,7 +31,7 @@
 
   function appendMoneyButton() {
     let button = createMoneyButton();
-    BUTTON_APPEND_DOM_NODE.insertBefore(button, BUTTON_APPEND_DOM_NODE.firstChild);
+    BUTTON_APPEND_DOM_NODE.insertBefore(button, BUTTON_APPEND_DOM_NODE.childNodes[1]);
   }
 
   function createPopup () {
@@ -62,7 +62,6 @@
     `;
 
     popup.addEventListener('click', (e) => {
-      //e.preventDefault();
       e.stopPropagation();
     });
 
@@ -92,6 +91,7 @@
 
     // Cleaning input
     input.value = '';
+    input.disabled = false;
 
     // Seting popup open flag as false
     IS_POPUP_OPEN = false;
@@ -154,7 +154,6 @@
       popupElement.querySelector('.addr-balance__popup_body--details').classList.add('on');
     }, 500);
 
-    console.log(address);
     return address;
   }
 
@@ -173,7 +172,10 @@
     }
     .addr-balance__button {
       position: relative;
-      margin-right: 7px;
+      float: left;
+      margin-top: 7px;
+      padding: 6px 10px;
+      margin-left: 7px;
       outline: none;
     }
     .addr-balance__popup {
@@ -191,8 +193,10 @@
       transform: translate3d(0, -20px, 0) scale(0.9);
       transform-origin: bottom right;
       transition: all 0.2s ease-in-out;
+      pointer-events: none;
     }
     .addr-balance__popup.on {
+      pointer-events: auto;
       opacity: 1;
       transform: translate3d(0, 0, 0) scale(1);
     }
@@ -200,7 +204,7 @@
       content: '';
       position: absolute;
       top: -5px;
-      right: 22px;
+      right: 9px;
       width: 0; 
       height: 0; 
       border-left: 5px solid transparent;
@@ -298,6 +302,19 @@
       color: #fff;
       background: ${COLOR_GREEN};
       margin-bottom: 15px;
+    }
+
+    @media screen and (max-width: 550px) {
+      .addr-balance__popup {
+        position: fixed;
+        top: 50px;
+        left: 1%;
+        width: 98%;
+      }
+      .addr-balance__popup:before {
+        right: 50%;
+        margin-right: -2px;
+      }
     }
     `;
 
